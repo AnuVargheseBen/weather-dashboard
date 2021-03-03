@@ -17,6 +17,7 @@ const useStyles = (theme) => ({
   },
   weather: {
     height: "100%",
+    marginTop: "8px",
   },
 });
 
@@ -27,32 +28,38 @@ class Location extends React.Component {
   }
 
   handleClick = async () => {
-    const geoAPI = `https://nominatim.openstreetmap.org/search?q=${this.state.value}&format=json&polygon=1&addressdetails=1`;
-    const geoLocations = await axios.get(geoAPI);
-    console.log(geoLocations.data);
+    console.log("value", this.state.value);
+    if (this.state.value.length > 1) {
+      const geoAPI = `https://nominatim.openstreetmap.org/search?q=${this.state.value}&format=json&polygon=1&addressdetails=1`;
+      const geoLocations = await axios.get(geoAPI);
+      console.log(geoLocations.data);
 
-    const options = {
-      method: "GET",
-      url: "https://weatherbit-v1-mashape.p.rapidapi.com/current",
-      params: {
-        lat: geoLocations.data[0].lat,
-        lon: geoLocations.data[0].lon,
-        units: "metric",
-        lang: "en",
-      },
-      headers: {
-        "x-rapidapi-key": "d40a5a4e25msh51b583d958830adp15929cjsn2c57ecc05088",
-        "x-rapidapi-host": "weatherbit-v1-mashape.p.rapidapi.com",
-      },
-    };
+      const options = {
+        method: "GET",
+        url: "https://weatherbit-v1-mashape.p.rapidapi.com/current",
+        params: {
+          lat: geoLocations.data[0].lat,
+          lon: geoLocations.data[0].lon,
+          units: "metric",
+          lang: "en",
+        },
+        headers: {
+          "x-rapidapi-key":
+            "d40a5a4e25msh51b583d958830adp15929cjsn2c57ecc05088",
+          "x-rapidapi-host": "weatherbit-v1-mashape.p.rapidapi.com",
+        },
+      };
 
-    const weatherInfo = await axios.request(options);
-    this.setState({
-      weatherInfo: weatherInfo.data,
-      location: geoLocations.data[0],
-    });
-    console.log("hi", weatherInfo);
-    console.log("date", weatherInfo.data.data[0].datetime);
+      const weatherInfo = await axios.request(options);
+      this.setState({
+        weatherInfo: weatherInfo.data,
+        location: geoLocations.data[0],
+      });
+      console.log("hi", weatherInfo);
+      console.log("date", weatherInfo.data.data[0].datetime);
+    } else {
+      alert("Please enter a City");
+    }
   };
 
   handleChange = (event) => {
@@ -62,7 +69,7 @@ class Location extends React.Component {
   render() {
     const { classes } = this.props;
     const { display_name: location } = this.state.location;
-    // const { timezone } = this.state.weatherInfo ?? {};
+
     const {
       datetime,
       temp,
@@ -77,9 +84,14 @@ class Location extends React.Component {
     return (
       <Grid container>
         <Grid item xs={2}></Grid>
+
         <Grid item xs={8}>
+          <h1 style={{ textAlign: "center", color: "blue" }}>
+            Just a click!! Weather is here.
+          </h1>
           <SearchBar
             value={this.state.value}
+            placeholder="City/Country"
             onChange={(newValue) => this.setState({ value: newValue })}
             onRequestSearch={() => this.handleClick()}
           />
@@ -87,7 +99,7 @@ class Location extends React.Component {
         <Grid item xs={2}></Grid>
         <Grid item xs={2}></Grid>
         <Grid item xs={4}>
-          {this.state.weatherInfo && (
+          {this.state.weatherInfo && this.state.value ? (
             <Weather
               temp={temp}
               precip={precip}
@@ -97,16 +109,20 @@ class Location extends React.Component {
               sunrise={sunrise}
               sunset={sunset}
             />
+          ) : (
+            ""
           )}
         </Grid>
         <Grid item xs={4}>
-          {this.state.weatherInfo && (
+          {this.state.weatherInfo && this.state.value ? (
             <LocationInfo
               className={classes.weather}
               location={location}
               datetime={datetime}
               timezone={timezone}
             />
+          ) : (
+            ""
           )}
         </Grid>
       </Grid>

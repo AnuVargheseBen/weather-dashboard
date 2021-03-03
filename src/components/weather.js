@@ -26,19 +26,20 @@ function Weather({
   return (
     <Paper className={`${classes.paper} ${className}`}>
       <Typography variant="h6" align="left">
-        Wind Speed: {windSpeed}
+        Wind Speed: {windSpeed}mph
       </Typography>
       <Typography variant="h6" align="left">
-        Sunrise: {sunrise}
+        Sunrise: {sunrise}AM
       </Typography>
       <Typography variant="h6" align="left">
-        Sunset: {sunset}
+        Sunset: {sunset}PM
       </Typography>
       <Typography variant="h6" align="right">
         {temp}
+        <span>&deg;F</span>
       </Typography>
       <Typography variant="h6" align="right">
-        Precipitations: {precip}
+        Precipitations: {precip}%
       </Typography>
       <Typography variant="h6" align="right">
         Chance of Snow: {snow}%
