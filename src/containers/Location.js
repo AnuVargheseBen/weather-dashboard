@@ -18,6 +18,7 @@ const useStyles = (theme) => ({
   weather: {
     height: "100%",
     marginTop: "8px",
+    padding: "30px",
   },
 });
 
@@ -28,11 +29,10 @@ class Location extends React.Component {
   }
 
   handleClick = async () => {
-    console.log("value", this.state.value);
     if (this.state.value.length > 1) {
       const geoAPI = `https://nominatim.openstreetmap.org/search?q=${this.state.value}&format=json&polygon=1&addressdetails=1`;
       const geoLocations = await axios.get(geoAPI);
-      console.log(geoLocations.data);
+      console.log("loc", geoLocations.data[0].address);
 
       const options = {
         method: "GET",
@@ -53,10 +53,10 @@ class Location extends React.Component {
       const weatherInfo = await axios.request(options);
       this.setState({
         weatherInfo: weatherInfo.data,
-        location: geoLocations.data[0],
+        location: geoLocations.data[0].address,
       });
       console.log("hi", weatherInfo);
-      console.log("date", weatherInfo.data.data[0].datetime);
+     
     } else {
       alert("Please enter a City");
     }
@@ -67,24 +67,29 @@ class Location extends React.Component {
   };
 
   render() {
+    console.log("count", this.state.location);
     const { classes } = this.props;
-    const { display_name: location } = this.state.location;
+    const { country,city,boundary } = this.state.location;
 
     const {
-      datetime,
       temp,
       precip,
       snow,
       wind_spd: windSpeed,
+      clouds,
       sunrise,
       sunset,
       timezone,
+      country_code: countryCode,
     } = this.state.weatherInfo?.data[0] ?? {};
+
+    const { description } = this.state.weatherInfo?.data[0]?.weather ?? {};
+
+  
 
     return (
       <Grid container>
         <Grid item xs={2}></Grid>
-
         <Grid item xs={8}>
           <h1 style={{ textAlign: "center", color: "blue" }}>
             Just a click!! Weather is here.
@@ -97,7 +102,25 @@ class Location extends React.Component {
           />
         </Grid>
         <Grid item xs={2}></Grid>
+
         <Grid item xs={2}></Grid>
+        <Grid item xs={4}>
+          {this.state.weatherInfo && this.state.value ? (
+            <LocationInfo
+              className={classes.weather}
+              country={country}
+              countryCode={countryCode}
+              city={city}
+              boundary={boundary}
+              timezone={timezone}
+              temp={temp}
+              description={description}
+            />
+          ) : (
+            ""
+          )}
+        </Grid>
+
         <Grid item xs={4}>
           {this.state.weatherInfo && this.state.value ? (
             <Weather
@@ -108,18 +131,7 @@ class Location extends React.Component {
               windSpeed={windSpeed}
               sunrise={sunrise}
               sunset={sunset}
-            />
-          ) : (
-            ""
-          )}
-        </Grid>
-        <Grid item xs={4}>
-          {this.state.weatherInfo && this.state.value ? (
-            <LocationInfo
-              className={classes.weather}
-              location={location}
-              datetime={datetime}
-              timezone={timezone}
+              clouds={clouds}
             />
           ) : (
             ""
