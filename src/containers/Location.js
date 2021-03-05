@@ -25,38 +25,46 @@ const useStyles = (theme) => ({
 class Location extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: " ", weatherInfo: null, location: {} };
+    this.state = {
+      value: " ",
+      weatherInfo: null,
+      location: {},
+      isLocation: false,
+    };
   }
 
   handleClick = async () => {
     if (this.state.value.length > 1) {
       const geoAPI = `https://nominatim.openstreetmap.org/search?q=${this.state.value}&format=json&polygon=1&addressdetails=1`;
       const geoLocations = await axios.get(geoAPI);
-      console.log("loc", geoLocations.data[0].address);
+      console.log("loc", geoLocations.data);
+      if (geoLocations.data.length > 0) {
+        const options = {
+          method: "GET",
+          url: "https://weatherbit-v1-mashape.p.rapidapi.com/current",
+          params: {
+            lat: geoLocations.data[0].lat,
+            lon: geoLocations.data[0].lon,
+            units: "metric",
+            lang: "en",
+          },
+          headers: {
+            "x-rapidapi-key":
+              "d40a5a4e25msh51b583d958830adp15929cjsn2c57ecc05088",
+            "x-rapidapi-host": "weatherbit-v1-mashape.p.rapidapi.com",
+          },
+        };
 
-      const options = {
-        method: "GET",
-        url: "https://weatherbit-v1-mashape.p.rapidapi.com/current",
-        params: {
-          lat: geoLocations.data[0].lat,
-          lon: geoLocations.data[0].lon,
-          units: "metric",
-          lang: "en",
-        },
-        headers: {
-          "x-rapidapi-key":
-            "d40a5a4e25msh51b583d958830adp15929cjsn2c57ecc05088",
-          "x-rapidapi-host": "weatherbit-v1-mashape.p.rapidapi.com",
-        },
-      };
-
-      const weatherInfo = await axios.request(options);
-      this.setState({
-        weatherInfo: weatherInfo.data,
-        location: geoLocations.data[0].address,
-      });
-      console.log("hi", weatherInfo);
-     
+        const weatherInfo = await axios.request(options);
+        this.setState({
+          weatherInfo: weatherInfo.data,
+          location: geoLocations.data[0].address,
+          isLocation: true,
+        });
+        console.log("hi", weatherInfo);
+      } else {
+        this.setState({ isLocation: false });
+      }
     } else {
       alert("Please enter a City");
     }
@@ -67,9 +75,8 @@ class Location extends React.Component {
   };
 
   render() {
-    console.log("count", this.state.location);
     const { classes } = this.props;
-    const { country,city,boundary } = this.state.location;
+    const { country, city, boundary } = this.state.location;
 
     const {
       temp,
@@ -84,8 +91,6 @@ class Location extends React.Component {
     } = this.state.weatherInfo?.data[0] ?? {};
 
     const { description } = this.state.weatherInfo?.data[0]?.weather ?? {};
-
-  
 
     return (
       <Grid container>
@@ -115,9 +120,10 @@ class Location extends React.Component {
               timezone={timezone}
               temp={temp}
               description={description}
+              isLocation={this.state.isLocation}
             />
           ) : (
-            ""
+            <LocationInfo isLocation={this.state.isLocation} />
           )}
         </Grid>
 
@@ -132,6 +138,8 @@ class Location extends React.Component {
               sunrise={sunrise}
               sunset={sunset}
               clouds={clouds}
+              isLocation={this.state.isLocation}
+              isCity={this.state.isCity}
             />
           ) : (
             ""

@@ -23,9 +23,13 @@ function Location({
   country,
   temp,
   description,
+  isLocation,
+  isCity
 }) {
   const classes = useStyles();
   const d = new Date();
+  console.log("loc1", isLocation);
+  console.log('city',isCity)
   const formatter = Intl.DateTimeFormat(
     "default", // a locale name; "default" chooses automatically
     {
@@ -36,31 +40,36 @@ function Location({
       minute: "numeric",
     }
   );
-  console.log("time", formatter.format(d));
 
   return (
     <Container fixed className={classes.root}>
-      <Typography variant="h4" align="start">
-        {city}
-        {boundary} <LocationCityIcon />
-      </Typography>
-      <Typography variant="h4" align="start">
-        {country}({countryCode})
-      </Typography>
-
-      <Typography variant="h4" align="start">
-        {timezone}
-      </Typography>
-      <Typography variant="h4" align="start">
-        {formatter.format(d)}
-      </Typography>
-      <Typography variant="h1" align="start">
-        {temp}
-        <span>&deg;C</span>
-      </Typography>
-      <Typography variant="h4" align="start">
-        {description}
-      </Typography>
+      {isLocation ? (
+        <React.Fragment>
+          <Typography variant="h4" align="start">
+            {city}
+            {boundary} <LocationCityIcon />
+          </Typography>
+          <Typography variant="h4" align="start">
+            {country}({countryCode})
+          </Typography>
+          <Typography variant="h4" align="start">
+            {timezone}
+          </Typography>
+          <Typography variant="h4" align="start">
+            {formatter.format(d)}
+          </Typography>
+          <Typography variant="h1" align="start">
+            {temp}
+            <span>&deg;C</span>
+          </Typography>
+          <Typography variant="h4" align="start">
+            {description}
+          </Typography>
+        </React.Fragment>
+      ) : (
+        // <h1 style={{textAlign:"center"}}>Sorry,the specified location is not found</h1>
+        ""
+      )}
     </Container>
   );
 }
