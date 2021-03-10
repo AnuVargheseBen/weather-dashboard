@@ -30,14 +30,66 @@ class Location extends React.Component {
       weatherInfo: null,
       location: {},
       isLocation: false,
+      latitude: null,
+      longitude: null,
+      currentLocation: {},
     };
   }
+
+  componentDidMount = () => {
+    this.currentLocation();
+  };
+
+  currentLocation = () => {
+    return navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        const options = {
+          method: "GET",
+          url: "https://weatherbit-v1-mashape.p.rapidapi.com/current",
+          params: {
+            lat: latitude,
+            lon: longitude,
+            units: "metric",
+            lang: "en",
+          },
+          headers: {
+            "x-rapidapi-key":
+              "d40a5a4e25msh51b583d958830adp15929cjsn2c57ecc05088",
+            "x-rapidapi-host": "weatherbit-v1-mashape.p.rapidapi.com",
+          },
+        };
+        const weatherInfo = await axios.request(options);
+
+        const fetchLocationName = await axios
+          .get(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?${latitude}&${longitude}&localityLanguage=en`
+          )
+          .then((response) => {
+            const city = response.data.city;
+            this.setState({ value: city });
+            return response.data;
+          });
+
+        this.setState({
+          weatherInfo: weatherInfo.data,
+          isLocation: true,
+          currentLocation: fetchLocationName,
+        });
+      },
+
+      (err) => console.log(err)
+    );
+  };
 
   handleClick = async () => {
     if (this.state.value.length > 1) {
       const geoAPI = `https://nominatim.openstreetmap.org/search?q=${this.state.value}&format=json&polygon=1&addressdetails=1`;
       const geoLocations = await axios.get(geoAPI);
       console.log("loc", geoLocations.data);
+
       if (geoLocations.data.length > 0) {
         const options = {
           method: "GET",
@@ -77,6 +129,7 @@ class Location extends React.Component {
   render() {
     const { classes } = this.props;
     const { country, city, boundary } = this.state.location;
+    const { city: location } = this.state.currentLocation;
 
     const {
       temp,
@@ -116,6 +169,7 @@ class Location extends React.Component {
               country={country}
               countryCode={countryCode}
               city={city}
+              location={location}
               boundary={boundary}
               timezone={timezone}
               temp={temp}
@@ -123,7 +177,7 @@ class Location extends React.Component {
               isLocation={this.state.isLocation}
             />
           ) : (
-            <LocationInfo isLocation={this.state.isLocation} />
+            ""
           )}
         </Grid>
 
@@ -139,7 +193,6 @@ class Location extends React.Component {
               sunset={sunset}
               clouds={clouds}
               isLocation={this.state.isLocation}
-              isCity={this.state.isCity}
             />
           ) : (
             ""

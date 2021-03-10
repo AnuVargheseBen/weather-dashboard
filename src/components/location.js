@@ -24,12 +24,11 @@ function Location({
   temp,
   description,
   isLocation,
-  isCity
+  location,
 }) {
   const classes = useStyles();
   const d = new Date();
-  console.log("loc1", isLocation);
-  console.log('city',isCity)
+
   const formatter = Intl.DateTimeFormat(
     "default", // a locale name; "default" chooses automatically
     {
@@ -47,6 +46,7 @@ function Location({
         <React.Fragment>
           <Typography variant="h4" align="start">
             {city}
+            {location}
             {boundary} <LocationCityIcon />
           </Typography>
           <Typography variant="h4" align="start">
@@ -67,7 +67,6 @@ function Location({
           </Typography>
         </React.Fragment>
       ) : (
-        // <h1 style={{textAlign:"center"}}>Sorry,the specified location is not found</h1>
         ""
       )}
     </Container>

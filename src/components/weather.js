@@ -39,7 +39,7 @@ function Weather({
   isCity
 }) {
   const classes = useStyles();
-  console.log("loc2", isLocation);
+  
 
   return (
     <React.Fragment>
