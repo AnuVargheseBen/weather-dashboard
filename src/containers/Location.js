@@ -26,13 +26,13 @@ class Location extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: " ",
+      searchValue: " ",
+      locationName: null,
       weatherInfo: null,
-      location: {},
+      country: null,
       isLocation: false,
-      latitude: null,
-      longitude: null,
       currentLocation: {},
+      isRequestState: null,
     };
   }
 
@@ -62,21 +62,40 @@ class Location extends React.Component {
           },
         };
         const weatherInfo = await axios.request(options);
+        console.log("weather", weatherInfo);
 
-        const fetchLocationName = await axios
+        const currentLocation = await axios
           .get(
             `https://api.bigdatacloud.net/data/reverse-geocode-client?${latitude}&${longitude}&localityLanguage=en`
           )
           .then((response) => {
             const city = response.data.city;
-            this.setState({ value: city });
+            this.setState({ searchValue: city });
             return response.data;
           });
+        console.log("location", currentLocation);
+
+        const weather = weatherInfo.data.data[0];
+        const weatherDescription = weather.weather;
 
         this.setState({
-          weatherInfo: weatherInfo.data,
+          weatherInfo: {
+            temp: weather.app_temp,
+            clouds: weather.clouds,
+            snow: weather.snow,
+            rain: weather.precip,
+            sunrise: weather.sunrise,
+            sunset: weather.sunset,
+            wind: weather.wind_spd,
+            description: weatherDescription.description,
+          },
+          country: {
+            country: currentLocation.countryName,
+            countryCode: currentLocation.countryCode,
+            timeZone: weather.timezone,
+          },
           isLocation: true,
-          currentLocation: fetchLocationName,
+          locationName: { city: currentLocation.city },
         });
       },
 
@@ -85,8 +104,8 @@ class Location extends React.Component {
   };
 
   handleClick = async () => {
-    if (this.state.value.length > 1) {
-      const geoAPI = `https://nominatim.openstreetmap.org/search?q=${this.state.value}&format=json&polygon=1&addressdetails=1`;
+    if (this.state.searchValue.length > 1) {
+      const geoAPI = `https://nominatim.openstreetmap.org/search?q=${this.state.searchValue}&format=json&polygon=1&addressdetails=1`;
       const geoLocations = await axios.get(geoAPI);
       console.log("loc", geoLocations.data);
 
@@ -108,43 +127,44 @@ class Location extends React.Component {
         };
 
         const weatherInfo = await axios.request(options);
+        console.log("hi", weatherInfo.data);
+        const location = geoLocations.data[0].address;
+        const weather = weatherInfo.data.data[0];
+        // console.log('hell',weather);
+        const weatherDescription = weather.weather;
+        // console.log('des',weatherDescription);
         this.setState({
-          weatherInfo: weatherInfo.data,
-          location: geoLocations.data[0].address,
+          weatherInfo: {
+            temp: weather.app_temp,
+            clouds: weather.clouds,
+            snow: weather.snow,
+            rain: weather.precip,
+            sunrise: weather.sunrise,
+            sunset: weather.sunset,
+            wind: weather.wind_spd,
+            description: weatherDescription.description,
+          },
+          country: {
+            country: location.country,
+            countryCode: location.country_code,
+            timeZone: weather.timezone,
+          },
+          locationName: { city: location.city || location.boundary },
           isLocation: true,
         });
-        console.log("hi", weatherInfo);
       } else {
-        this.setState({ isLocation: false });
+        this.setState({ isLocation: false});
       }
     } else {
       alert("Please enter a City");
     }
-  };
-
-  handleChange = (event) => {
-    this.setState({ value: event.target.value });
+    // this.setState({weatherInfo:null})
   };
 
   render() {
     const { classes } = this.props;
-    const { country, city, boundary } = this.state.location;
-    const { city: location } = this.state.currentLocation;
-
-    const {
-      temp,
-      precip,
-      snow,
-      wind_spd: windSpeed,
-      clouds,
-      sunrise,
-      sunset,
-      timezone,
-      country_code: countryCode,
-    } = this.state.weatherInfo?.data[0] ?? {};
-
-    const { description } = this.state.weatherInfo?.data[0]?.weather ?? {};
-
+    console.log("bool", this.state.isLocation);
+    console.log("wthr", this.state.weatherInfo);
     return (
       <Grid container>
         <Grid item xs={2}></Grid>
@@ -153,9 +173,15 @@ class Location extends React.Component {
             Just a click!! Weather is here.
           </h1>
           <SearchBar
-            value={this.state.value}
+            value={this.state.searchValue}
             placeholder="City/Country"
-            onChange={(newValue) => this.setState({ value: newValue })}
+            onChange={(newValue) =>
+              this.setState({
+                searchValue: newValue,
+                weatherInfo: null,
+                isLocation: false,
+              })
+            }
             onRequestSearch={() => this.handleClick()}
           />
         </Grid>
@@ -163,35 +189,23 @@ class Location extends React.Component {
 
         <Grid item xs={2}></Grid>
         <Grid item xs={4}>
-          {this.state.weatherInfo && this.state.value ? (
+          {this.state.weatherInfo && this.state.searchValue ? (
             <LocationInfo
-              className={classes.weather}
-              country={country}
-              countryCode={countryCode}
-              city={city}
-              location={location}
-              boundary={boundary}
-              timezone={timezone}
-              temp={temp}
-              description={description}
+              country={this.state.country}
+              locationName={this.state.locationName}
+              weatherInfo={this.state.weatherInfo}
               isLocation={this.state.isLocation}
             />
           ) : (
-            ""
+            <LocationInfo isLocation={this.state.isLocation}/>
           )}
         </Grid>
 
         <Grid item xs={4}>
-          {this.state.weatherInfo && this.state.value ? (
+          {this.state.weatherInfo && this.state.searchValue ? (
             <Weather
-              temp={temp}
-              precip={precip}
+              weatherInfo={this.state.weatherInfo}
               className={classes.weather}
-              snow={snow}
-              windSpeed={windSpeed}
-              sunrise={sunrise}
-              sunset={sunset}
-              clouds={clouds}
               isLocation={this.state.isLocation}
             />
           ) : (

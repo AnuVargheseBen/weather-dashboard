@@ -16,15 +16,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Location({
-  city,
-  boundary,
-  timezone,
-  countryCode,
+  locationName,
   country,
-  temp,
-  description,
+  weatherInfo,
   isLocation,
-  location,
 }) {
   const classes = useStyles();
   const d = new Date();
@@ -39,37 +34,35 @@ function Location({
       minute: "numeric",
     }
   );
-
+console.log('t/F',isLocation)
   return (
-    <Container fixed className={classes.root}>
+    <React.Fragment>
       {isLocation ? (
-        <React.Fragment>
+        <Container fixed className={classes.root}>
           <Typography variant="h4" align="start">
-            {city}
-            {location}
-            {boundary} <LocationCityIcon />
+            {locationName.city} <LocationCityIcon />
           </Typography>
           <Typography variant="h4" align="start">
-            {country}({countryCode})
+            {country.country}({country.countryCode})
           </Typography>
           <Typography variant="h4" align="start">
-            {timezone}
+            { country.timeZone}
           </Typography>
           <Typography variant="h4" align="start">
             {formatter.format(d)}
           </Typography>
           <Typography variant="h1" align="start">
-            {temp}
+            {weatherInfo.temp}
             <span>&deg;C</span>
           </Typography>
           <Typography variant="h4" align="start">
-            {description}
+            {weatherInfo.description}
           </Typography>
-        </React.Fragment>
+        </Container>
       ) : (
-        ""
+        <h1 style={{textAlign:"start"}}>Please Enter a Location or City</h1>
       )}
-    </Container>
+    </React.Fragment>
   );
 }
 export default Location;

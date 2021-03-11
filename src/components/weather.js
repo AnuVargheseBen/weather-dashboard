@@ -28,22 +28,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Weather({
-  precip,
+  weatherInfo,
   className,
-  snow,
-  windSpeed,
-  sunrise,
-  sunset,
-  clouds,
   isLocation,
-  isCity
 }) {
   const classes = useStyles();
-  
 
   return (
     <React.Fragment>
-      { isLocation ?(
+      {isLocation ? (
         <Paper className={`${classes.paper} ${className}`}>
           <List className="flexContainer">
             <Grid container>
@@ -54,20 +47,20 @@ function Weather({
                   </ListItemIcon>
                   <ListItemText
                     primary="Wind"
-                    secondary={`${windSpeed.toFixed(2)}mph`}
+                    secondary={`${weatherInfo.wind.toFixed(2)}mph`}
                   />
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
                     <AcUnitTwoToneIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Snow" secondary={`${snow}%`} />
+                  <ListItemText primary="Snow" secondary={`${weatherInfo.snow}%`} />
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
                     <BeachAccessRoundedIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Rain" secondary={`${precip}%`} />
+                  <ListItemText primary="Rain" secondary={`${weatherInfo.rain}%`} />
                 </ListItem>
               </Grid>
 
@@ -76,26 +69,26 @@ function Weather({
                   <ListItemIcon>
                     <WbSunnycon />
                   </ListItemIcon>
-                  <ListItemText primary="Sunrise" secondary={`${sunrise}AM`} />
+                  <ListItemText primary="Sunrise" secondary={`${weatherInfo.sunrise}AM`} />
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
                     <Brightness4Icon />
                   </ListItemIcon>
-                  <ListItemText primary="Sunset" secondary={`${sunset}PM`} />
+                  <ListItemText primary="Sunset" secondary={`${weatherInfo.sunset}PM`} />
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
                     <CloudRoundedIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Clouds" secondary={`${clouds}%`} />
+                  <ListItemText primary="Clouds" secondary={`${weatherInfo.clouds}%`} />
                 </ListItem>
               </Grid>
             </Grid>
           </List>
         </Paper>
       ) : (
-       ""
+        ""
       )}
     </React.Fragment>
   );
