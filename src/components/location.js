@@ -4,6 +4,7 @@ import LocationCityIcon from "@material-ui/icons/LocationCity";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -19,7 +20,6 @@ function Location({
   locationName,
   country,
   weatherInfo,
-  isLocation,
 }) {
   const classes = useStyles();
   const d = new Date();
@@ -34,10 +34,8 @@ function Location({
       minute: "numeric",
     }
   );
-console.log('t/F',isLocation)
+
   return (
-    <React.Fragment>
-      {isLocation ? (
         <Container fixed className={classes.root}>
           <Typography variant="h4" align="start">
             {locationName.city} <LocationCityIcon />
@@ -46,23 +44,20 @@ console.log('t/F',isLocation)
             {country.country}({country.countryCode})
           </Typography>
           <Typography variant="h4" align="start">
-            { country.timeZone}
+            {country.timeZone}
           </Typography>
           <Typography variant="h4" align="start">
             {formatter.format(d)}
           </Typography>
           <Typography variant="h1" align="start">
-            {weatherInfo.temp}
+            {weatherInfo.tempDegree}
             <span>&deg;C</span>
           </Typography>
           <Typography variant="h4" align="start">
             {weatherInfo.description}
           </Typography>
         </Container>
-      ) : (
-        <h1 style={{textAlign:"start"}}>Please Enter a Location or City</h1>
-      )}
-    </React.Fragment>
+
   );
 }
 export default Location;

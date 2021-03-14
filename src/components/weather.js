@@ -28,68 +28,69 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Weather({
-  weatherInfo,
+  wind,
+  snow,
+  rain,
+  sunrise,
+  sunset,
+  clouds,
   className,
-  isLocation,
+ 
 }) {
   const classes = useStyles();
 
   return (
     <React.Fragment>
-      {isLocation ? (
-        <Paper className={`${classes.paper} ${className}`}>
-          <List className="flexContainer">
-            <Grid container>
-              <Grid xs={6}>
-                <ListItem>
-                  <ListItemIcon>
-                    <WavesRoundedIcon />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Wind"
-                    secondary={`${weatherInfo.wind.toFixed(2)}mph`}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <AcUnitTwoToneIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Snow" secondary={`${weatherInfo.snow}%`} />
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <BeachAccessRoundedIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Rain" secondary={`${weatherInfo.rain}%`} />
-                </ListItem>
-              </Grid>
-
-              <Grid xs={6}>
-                <ListItem>
-                  <ListItemIcon>
-                    <WbSunnycon />
-                  </ListItemIcon>
-                  <ListItemText primary="Sunrise" secondary={`${weatherInfo.sunrise}AM`} />
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <Brightness4Icon />
-                  </ListItemIcon>
-                  <ListItemText primary="Sunset" secondary={`${weatherInfo.sunset}PM`} />
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <CloudRoundedIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Clouds" secondary={`${weatherInfo.clouds}%`} />
-                </ListItem>
-              </Grid>
+      <Paper className={`${classes.paper} ${className}`}>
+        <List className="flexContainer">
+          <Grid container>
+            <Grid xs={6}>
+              <ListItem>
+                <ListItemIcon>
+                  <WavesRoundedIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Wind"
+                  secondary={`${wind}mph`}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <AcUnitTwoToneIcon />
+                </ListItemIcon>
+                <ListItemText primary="Snow" secondary={`${snow}%`} />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <BeachAccessRoundedIcon />
+                </ListItemIcon>
+                <ListItemText primary="Rain" secondary={`${rain}%`} />
+              </ListItem>
             </Grid>
-          </List>
-        </Paper>
-      ) : (
-        ""
-      )}
+
+            <Grid xs={6}>
+              <ListItem>
+                <ListItemIcon>
+                  <WbSunnycon />
+                </ListItemIcon>
+                <ListItemText primary="Sunrise" secondary={`${sunrise}`} />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <Brightness4Icon />
+                </ListItemIcon>
+                <ListItemText primary="Sunset" secondary={`${sunset}`} />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <CloudRoundedIcon />
+                </ListItemIcon>
+                <ListItemText primary="Clouds" secondary={`${clouds}%`} />
+              </ListItem>
+            </Grid>
+          </Grid>
+        </List>
+      </Paper>
     </React.Fragment>
   );
 }
