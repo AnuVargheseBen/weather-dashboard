@@ -1,16 +1,13 @@
 import GridList from '@material-ui/core/GridList';
 import GridTile from '@material-ui/core/GridListTile';
 import { makeStyles } from '@material-ui/core/styles';
-import BeachAccessRoundedIcon from '@material-ui/icons/BeachAccessRounded';
-import WbSunnycon from '@material-ui/icons/WbSunny';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'list-item',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
-    overflow: 'auto',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: '#fafafa',
     borderRadius: '25px',
   },
   gridList: {
@@ -22,33 +19,37 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function HourlyWeatherData({ weather }) {
+function HourlyWeatherData({ hourly }) {
+  console.log('koo', hourly);
   const classes = useStyles();
 
-  const weatherData = weather.hour;
-  const d = new Date();
-  let hour = d.getHours();
-  const currentWeather = weatherData.slice(hour, hour + 12);
-  console.log('hours', currentWeather);
   return (
     <div className={classes.root}>
       <GridList className={classes.gridList} cols={6} spacing={3}>
-        {currentWeather.map((weather) => {
+        {hourly.map((hours, index) => {
           return (
-            <GridTile key={weather.id} className={classes.title}>
-              <h1>{weather.time.split(' ')[1]}</h1>
+            <GridTile key={index} className={classes.title}>
+              <h2>{index}</h2>
 
-              {weather.chance_of_rain === '0' ? (
-                <h1>{<WbSunnycon />}</h1>
+              <h2>{hours.timeObj.format('HH:mm')}</h2>
+              {hours.type === 'Sunset' || hours.type === 'Sunrise' ? (
+                <h2>
+                  <img src={hours.icon} alt='icon' width='15%' />
+                </h2>
               ) : (
-                <h1>
-                  <BeachAccessRoundedIcon />
-                </h1>
+                <h2>
+                  <img src={hours?.condition?.icon} alt='icon' width='15%' />
+                </h2>
               )}
-              <h1>
-                {weather.temp_c}
-                <span>&deg;C</span>
-              </h1>
+
+              {hours.temp_c ? (
+                <h2>
+                  {hours.temp_c}
+                  <span>&deg;C</span>
+                </h2>
+              ) : (
+                <h2>{hours.type}</h2>
+              )}
             </GridTile>
           );
         })}
