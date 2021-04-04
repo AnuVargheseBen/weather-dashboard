@@ -5,11 +5,10 @@ const DATE_TIME_FORMATE = 'YYYY-MM-DD HH:mm';
 const DATE_TIME_SUNRISE_SUNSET = 'YYYY-MM-DD HH:mm A';
 
 function getUpcoming24Hour(daysForecast) {
-  // const curHour = new Date().getHours();
   const curDate = daysForecast.location.localtime;
-  const curHour = parseInt(moment(curDate).format('HH'));
-  console.log({ curHour });
-  const currentDay = daysForecast.forecast.forecastday[0].hour;
+  const curHourObj = moment(curDate);
+  const curHour = parseInt(curHourObj.format('HH'));
+   const currentDay = daysForecast.forecast.forecastday[0].hour;
   const nextDay = daysForecast.forecast.forecastday[1].hour;
   const currentDayTime = currentDay
     .concat(nextDay)
@@ -17,7 +16,6 @@ function getUpcoming24Hour(daysForecast) {
     .map((item) => {
       return { ...item, timeObj: moment(item.time, DATE_TIME_FORMATE) };
     });
-  console.log({ currentDayTime });
 
   const {
     astro: { sunrise: curSunriseStr, sunset: curSunsetStr },
@@ -28,12 +26,13 @@ function getUpcoming24Hour(daysForecast) {
     date: nextDateStr,
   } = daysForecast.forecast.forecastday[1];
 
+
   const sunriseSunsets = new Set([
     {
       timeObj: moment(`${curDateStr} ${curSunriseStr}`, DATE_TIME_SUNRISE_SUNSET),
       type: 'Sunrise',
       icon:
-        'https://www.flaticon.com/svg/vstatic/svg/1852/1852525.svg?token=exp=1617178886~hmac=cdab683822a9b9c746f3e5673d23ae22',
+        'https://www.flaticon.com/svg/vstatic/svg/362/362408.svg?token=exp=1617564266~hmac=9ceb1ea991a0bfce56144d9eb6fb5ef1',
     },
     {
       timeObj: moment(`${curDateStr} ${curSunsetStr}`, DATE_TIME_SUNRISE_SUNSET),
@@ -45,7 +44,7 @@ function getUpcoming24Hour(daysForecast) {
       timeObj: moment(`${nextDateStr} ${nextSunriseStr}`, DATE_TIME_SUNRISE_SUNSET),
       type: 'Sunrise',
       icon:
-        'https://www.flaticon.com/svg/vstatic/svg/1852/1852525.svg?token=exp=1617178886~hmac=cdab683822a9b9c746f3e5673d23ae22',
+        'https://www.flaticon.com/svg/vstatic/svg/362/362408.svg?token=exp=1617564266~hmac=9ceb1ea991a0bfce56144d9eb6fb5ef1',
     },
     {
       timeObj: moment(`${nextDateStr} ${nextSunsetStr}`, DATE_TIME_SUNRISE_SUNSET),
@@ -55,6 +54,9 @@ function getUpcoming24Hour(daysForecast) {
     },
   ]);
 
+  
+  console.log({sunriseSunsets})
+
   let result = [];
   for (let hour of currentDayTime) {
     const { timeObj: curTime } = hour;
@@ -62,7 +64,8 @@ function getUpcoming24Hour(daysForecast) {
 
     sunriseSunsets.forEach((item) => {
       const { timeObj: nextTime } = item;
-      if (curTime.isBefore(nextTime) && curTime.add(1, 'hours').isAfter(nextTime)) {
+      const curTime1HourLater = moment(curTime).add(1, 'hours')
+      if (curTime.isBefore(nextTime) && curTime1HourLater.isAfter(nextTime)) {
         sunriseOrSunset = item;
       }
     });

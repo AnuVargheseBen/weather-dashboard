@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function HourlyWeatherData({ hourly }) {
-  console.log('koo', hourly);
   const classes = useStyles();
+  console.log({hourly})
 
   return (
     <div className={classes.root}>
@@ -29,8 +29,6 @@ function HourlyWeatherData({ hourly }) {
         {hourly.map((hours, index) => {
           return (
             <GridTile key={index} className={classes.title}>
-              <h2>{index}</h2>
-
               <h2>{hours.timeObj.format('HH:mm')}</h2>
               {hours.type === 'Sunset' || hours.type === 'Sunrise' ? (
                 <h2>
