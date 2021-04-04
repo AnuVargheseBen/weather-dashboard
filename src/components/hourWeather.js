@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'list-item',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     backgroundColor: '#fafafa',
@@ -21,22 +20,22 @@ const useStyles = makeStyles((theme) => ({
 
 function HourlyWeatherData({ hourly }) {
   const classes = useStyles();
-  console.log({hourly})
+  console.log({ hourly });
 
   return (
     <div className={classes.root}>
-      <GridList className={classes.gridList} cols={6} spacing={3}>
+      <GridList className={classes.gridList} cols={14} spacing={3}>
         {hourly.map((hours, index) => {
           return (
             <GridTile key={index} className={classes.title}>
               <h2>{hours.timeObj.format('HH:mm')}</h2>
               {hours.type === 'Sunset' || hours.type === 'Sunrise' ? (
                 <h2>
-                  <img src={hours.icon} alt='icon' width='15%' />
+                  <img src={hours.icon} alt='icon' width='50%' />
                 </h2>
               ) : (
                 <h2>
-                  <img src={hours?.condition?.icon} alt='icon' width='15%' />
+                  <img src={hours?.condition?.icon} alt='icon' width='50%' />
                 </h2>
               )}
 
