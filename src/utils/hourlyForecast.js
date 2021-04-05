@@ -1,5 +1,6 @@
 import moment from 'moment';
 
+
 const DATE_TIME_FORMATE = 'YYYY-MM-DD HH:mm';
 
 const DATE_TIME_SUNRISE_SUNSET = 'YYYY-MM-DD HH:mm A';
@@ -31,26 +32,25 @@ function getUpcoming24Hour(daysForecast) {
     {
       timeObj: moment(`${curDateStr} ${curSunriseStr}`, DATE_TIME_SUNRISE_SUNSET),
       type: 'Sunrise',
-      icon:
-        'https://www.flaticon.com/svg/vstatic/svg/362/362408.svg?token=exp=1617564266~hmac=9ceb1ea991a0bfce56144d9eb6fb5ef1',
+      icon: `${process.env.PUBLIC_URL}/images/sunrise.png`,
     },
     {
       timeObj: moment(`${curDateStr} ${curSunsetStr}`, DATE_TIME_SUNRISE_SUNSET),
       type: 'Sunset',
       icon:
-        'https://www.flaticon.com/svg/vstatic/svg/2294/2294957.svg?token=exp=1617196522~hmac=53d9ab02aa4a37ee9fdbe79399f881be',
+      `${process.env.PUBLIC_URL}/images/sunset.png`,
     },
     {
       timeObj: moment(`${nextDateStr} ${nextSunriseStr}`, DATE_TIME_SUNRISE_SUNSET),
       type: 'Sunrise',
       icon:
-        'https://www.flaticon.com/svg/vstatic/svg/362/362408.svg?token=exp=1617564266~hmac=9ceb1ea991a0bfce56144d9eb6fb5ef1',
+      `${process.env.PUBLIC_URL}/images/sunrise.png`,
     },
     {
       timeObj: moment(`${nextDateStr} ${nextSunsetStr}`, DATE_TIME_SUNRISE_SUNSET),
       type: 'Sunset',
       icon:
-        'https://www.flaticon.com/svg/vstatic/svg/2294/2294957.svg?token=exp=1617196522~hmac=53d9ab02aa4a37ee9fdbe79399f881be',
+      `${process.env.PUBLIC_URL}/images/sunset.png`,
     },
   ]);
 
