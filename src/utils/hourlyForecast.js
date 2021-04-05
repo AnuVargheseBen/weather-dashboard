@@ -6,9 +6,10 @@ const DATE_TIME_SUNRISE_SUNSET = 'YYYY-MM-DD HH:mm A';
 
 function getUpcoming24Hour(daysForecast) {
   const curDate = daysForecast.location.localtime;
+  console.log({ curDate });
   const curHourObj = moment(curDate);
   const curHour = parseInt(curHourObj.format('HH'));
-   const currentDay = daysForecast.forecast.forecastday[0].hour;
+  const currentDay = daysForecast.forecast.forecastday[0].hour;
   const nextDay = daysForecast.forecast.forecastday[1].hour;
   const currentDayTime = currentDay
     .concat(nextDay)
@@ -25,7 +26,6 @@ function getUpcoming24Hour(daysForecast) {
     astro: { sunrise: nextSunriseStr, sunset: nextSunsetStr },
     date: nextDateStr,
   } = daysForecast.forecast.forecastday[1];
-
 
   const sunriseSunsets = new Set([
     {
@@ -54,8 +54,7 @@ function getUpcoming24Hour(daysForecast) {
     },
   ]);
 
-  
-  console.log({sunriseSunsets})
+  console.log({ sunriseSunsets });
 
   let result = [];
   for (let hour of currentDayTime) {
@@ -64,7 +63,7 @@ function getUpcoming24Hour(daysForecast) {
 
     sunriseSunsets.forEach((item) => {
       const { timeObj: nextTime } = item;
-      const curTime1HourLater = moment(curTime).add(1, 'hours')
+      const curTime1HourLater = moment(curTime).add(1, 'hours');
       if (curTime.isBefore(nextTime) && curTime1HourLater.isAfter(nextTime)) {
         sunriseOrSunset = item;
       }
