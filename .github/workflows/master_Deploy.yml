@@ -17,6 +17,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install Packages
       run: npm install
+    - name: Installing global Packages
+      run: npm i -g gh-pages
     - name: Build project
       run: npm run build
     - name: Deploy to GH Pages
