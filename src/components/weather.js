@@ -1,17 +1,9 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import AcUnitTwoToneIcon from '@material-ui/icons/AcUnitTwoTone';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import { Grid } from '@material-ui/core';
-import Brightness4Icon from '@material-ui/icons/Brightness4';
-import WbSunnycon from '@material-ui/icons/WbSunny';
-import CloudRoundedIcon from '@material-ui/icons/CloudRounded';
-import BeachAccessRoundedIcon from '@material-ui/icons/BeachAccessRounded';
-import WavesRoundedIcon from '@material-ui/icons/WavesRounded';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(4),
   },
+  textContainer: {
+    margin: 10,
+  },
 }));
 
 function Weather({ wind, snow, rain, sunrise, sunset, clouds, className }) {
@@ -34,53 +29,72 @@ function Weather({ wind, snow, rain, sunrise, sunset, clouds, className }) {
 
   return (
     <React.Fragment>
-      <Paper className={`${classes.root} ${className}`}>
+      <div className={`${classes.root} ${className}`}>
         <List className='flexContainer'>
           <Grid container>
             <Grid xs={6}>
               <ListItem>
-                <ListItemIcon>
-                  <WavesRoundedIcon />
-                </ListItemIcon>
-                <ListItemText primary='Wind' secondary={`${wind}mph`} />
+                <img src={process.env.PUBLIC_URL + '/images/wind.png'} width='20%' alt='wind' />
+                <ListItemText
+                  className={classes.textContainer}
+                  primary='Wind'
+                  secondary={`${wind}mph`}
+                />
               </ListItem>
               <ListItem>
-                <ListItemIcon>
-                  <AcUnitTwoToneIcon />
-                </ListItemIcon>
-                <ListItemText primary='Snow' secondary={`${snow}%`} />
+                <img
+                  src={process.env.PUBLIC_URL + '/images/snowflake.png'}
+                  width='20%'
+                  alt='snow'
+                />
+                <ListItemText
+                  className={classes.textContainer}
+                  primary='Snow'
+                  secondary={`${snow}%`}
+                />
               </ListItem>
               <ListItem>
-                <ListItemIcon>
-                  <BeachAccessRoundedIcon />
-                </ListItemIcon>
-                <ListItemText primary='Rain' secondary={`${rain}%`} />
+                <img src={process.env.PUBLIC_URL + '/images/rainy.png'} width='20%' alt='rain' />
+                <ListItemText
+                  className={classes.textContainer}
+                  primary='Rain'
+                  secondary={`${rain}%`}
+                />
               </ListItem>
             </Grid>
-
             <Grid xs={6}>
               <ListItem>
-                <ListItemIcon>
-                  <WbSunnycon />
-                </ListItemIcon>
-                <ListItemText primary='Sunrise' secondary={`${sunrise}`} />
+                <img
+                  src={process.env.PUBLIC_URL + '/images/sunrise.png'}
+                  width='20%'
+                  alt='sunrise'
+                />
+                <ListItemText
+                  className={classes.textContainer}
+                  primary='Sunrise'
+                  secondary={`${sunrise}`}
+                />
               </ListItem>
               <ListItem>
-                <ListItemIcon>
-                  <Brightness4Icon />
-                </ListItemIcon>
-                <ListItemText primary='Sunset' secondary={`${sunset}`} />
+                <img src={process.env.PUBLIC_URL + '/images/sunset.png'} width='20%' alt='sunset' />
+                <ListItemText
+                  className={classes.textContainer}
+                  primary='Sunset'
+                  secondary={`${sunset}`}
+                />
               </ListItem>
               <ListItem>
-                <ListItemIcon>
-                  <CloudRoundedIcon />
-                </ListItemIcon>
-                <ListItemText primary='Clouds' secondary={`${clouds}%`} />
+                <img src={process.env.PUBLIC_URL + '/images/clouds.png'} width='20%' alt='clouds' />
+                <ListItemText
+                  className={classes.textContainer}
+                  primary='Clouds'
+                  secondary={`${clouds}%`}
+                />
               </ListItem>
             </Grid>
           </Grid>
         </List>
-      </Paper>
+      </div>
     </React.Fragment>
   );
 }

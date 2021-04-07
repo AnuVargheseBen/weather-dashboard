@@ -14,7 +14,7 @@ function getUpcoming24Hour(daysForecast) {
   const nextDay = daysForecast.forecast.forecastday[1].hour;
   const currentDayTime = currentDay
     .concat(nextDay)
-    .slice(curHour, curHour + 13)
+    .slice(curHour, curHour + 25)
     .map((item) => {
       return { ...item, timeObj: moment(item.time, DATE_TIME_FORMATE) };
     });

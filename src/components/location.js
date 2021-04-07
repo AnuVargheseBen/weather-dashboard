@@ -29,23 +29,23 @@ function Location({ locationName, country, weatherInfo }) {
       <Typography variant='h4' align='start'>
         {country.country}({country.countryCode})
       </Typography>
-      <Typography variant='h4' align='start'>
+      <Typography variant='h3' align='start'>
         {country.timeZone}
       </Typography>
-      <Typography variant='h4' align='start'>
+      <Typography variant='h5' align='start'>
         {dateObjDay}
       </Typography>
-      <Typography variant='h4' align='start'>
+      <Typography variant='h5' align='start'>
         {dateObjTime}
       </Typography>
-      <Typography variant='h1' align='start'>
+      <Typography variant='h2' align='start'>
         {weatherInfo.tempDegree}
         <span>&deg;C</span>
       </Typography>
       <Typography variant='h4' align='start'>
         {weatherInfo.description}
       </Typography>
-      <Typography variant='h4' align='start'>
+      <Typography variant='h3' align='start'>
         <img src={weatherInfo.icon} alt='icon' />
       </Typography>
     </Container>

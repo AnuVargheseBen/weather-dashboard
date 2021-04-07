@@ -164,7 +164,7 @@ class Location extends React.Component {
         <Grid container>
           <Grid item xs={2}></Grid>
           <Grid item xs={8}>
-            <h1 style={{ textAlign: 'center', color: 'blue' }}>Just a click!! Weather is here.</h1>
+            <h1 style={{ textAlign: 'center' }}>JUST A CLICK!! WEATHER IS HERE.</h1>
             <SearchBar
               value={this.state.searchValue}
               placeholder='City/Country'

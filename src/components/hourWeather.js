@@ -8,6 +8,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-around',
     backgroundColor: '#fafafa',
     borderRadius: '25px',
+    marginRight: '10%',
+    marginLeft: '10%',
   },
   gridList: {
     flexWrap: 'nowrap',
@@ -20,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
 
 function HourlyWeatherData({ hourly }) {
   const classes = useStyles();
-  console.log({ hourly });
 
   return (
     <div className={classes.root}>
